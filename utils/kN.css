@@ -435,3 +435,138 @@ a:active {
 /* button */
  
  
+/* Your existing CSS for buttons */
+/* Existing button styles */
+.button {
+  background-color: #555;
+  opacity: 0.7;
+  border: none;
+  color: #fff;
+  height: 40px;
+  margin: 10px;
+  margin-bottom: 0;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-family: Monospace; /* DIN1451; */
+  outline: none;
+  width: 180px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+/* Glow effect */
+.button::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  z-index: -1;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  background: linear-gradient(
+    45deg,
+    #FF0000, #FF7300, #FFFB00, #48FF00,
+    #00FFD5, #002BFF, #FF00C8, #FF0000
+  );
+  background-size: 400%;
+  border-radius: 14px; /* Slightly larger than button border-radius to create a border-like effect */
+  filter: blur(8px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Animation for glowing effect */
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* Show glowing effect on hover */
+.button:hover::before {
+  opacity: 1;
+}
+
+/* Additional active state styles (optional) */
+.button:active::after {
+  background: transparent;
+}
+
+.button:active {
+  color: #000;
+  font-weight: bold;
+}
+
+
+/* Slider and TouchElement Base Styles */
+.slider, .touchElement,.default-visible {
+  /* Your existing styles for slider and touchElement */
+}
+
+/* Glow effect for Slider */
+.slider::before, .touchElement::before,.default-visible ::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  z-index: -1;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  background: linear-gradient(
+    45deg,
+    #FF0000, #FF7300, #FFFB00, #48FF00,
+    #00FFD5, #002BFF, #FF00C8, #FF0000
+  );
+  background-size: 400%;
+  border-radius: 10px; /* Adjust border-radius as needed */
+  filter: blur(8px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  /* Ensure the pseudo-element covers the entire element. Adjust as needed */
+  box-sizing: border-box;
+}
+
+/* Hover effect for Slider and TouchElement */
+.slider:hover::before, .touchElement:hover::before,.default-visible:hover::before {
+  opacity: 1;
+}
+
+/* Keyframes for the glowing effect */
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+
+.glow-effect:hover {
+  filter: url(#colorful-glow);
+  cursor: pointer;
+}
+
+
+/* .slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 36px;
+  background: rgba(255, 0, 0, 0.017);
+  outline: none;
+  opacity: 1;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+cursor: pointer;
+overflow: unset;
+border-radius: 5px;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #4CAF50;
+  cursor: pointer;
+} */
