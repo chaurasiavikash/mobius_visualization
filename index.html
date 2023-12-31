@@ -83,15 +83,31 @@
       </g>
     </svg>
 
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height:0; width:0; position:absolute;">
+      <defs>
+        <filter id="colorful-glow">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
+          <feOffset in="blur" dx="0" dy="0" result="offsetBlur" />
+          <feFlood flood-color="#FF7300" result="flood" />
+          <feComposite in="flood" in2="offsetBlur" operator="in" result="colorBlur"/>
+          <feMerge>
+            <feMergeNode in="colorBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+    </svg>
+    
 
-    <svg id='speedSlider' class='slider' width='200' height='100' viewBox='-100 -25 200 50'>
+    
+    <svg id='speedSlider' class='slider glow-effect' width='200' height='100' viewBox='-100 -25 200 50'>
       <title> slide to change the speed of eversion</title>
       <polygon fill='#555' points='-100 -20 -100 20 100 20 100 -20' />
       <rect width='38' height='38' x='-19' y='-19' />
       <text x='-100' y='-25'></text>
     </svg>
 
-    <svg id='hingeLengthSlider' class='slider' width='200' height='100' viewBox='-100 -25 200 50'>
+    <svg id='hingeLengthSlider' class='slider glow-effect' width='200' height='100' viewBox='-100 -25 200 50'>
       <title> slide to change the width of the band</title>
       <polygon fill='#555' points='-100 -20 -100 20 100 20 100 -20' />
       <rect width='38' height='38' x='-19' y='-19' />
