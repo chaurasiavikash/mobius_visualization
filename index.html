@@ -50,12 +50,12 @@
   <div class='leftbar'>
 
     <svg width='200' height='110' viewBox='-100 -55 200 110' style='margin-top:10px'>
-      <g class='touchElement' id='buttNumOfTetMinus'>
+      <g class='touchElement glow-effect' id='buttNumOfTetMinus'>
         <title>decrease the number n of half twists of the optimal band with n fold rotational symmetry</title>
         <circle cx='-62' cy='10' r='34' /> <!-- Modified cy here -->
         <polygon points='-80 7 -80 13 -44 13 -44 7' fill='#fff' /> <!-- Adjusted y values in points -->
       </g>
-      <g class='touchElement' id='buttNumOfTetPlus'>
+      <g class='touchElement glow-effect' id='buttNumOfTetPlus'>
         <title>increase the number n of half twists of the optimal band with n fold rotational symmetry</title>
         <circle cx='62' cy='10' r='34' /> <!-- Modified cy here -->
         <polygon points='80 7 80 13 65 13 65 28 59 28 59 13 44 13 44 7 59 7 59 -8 65 -8 65 7' fill='#fff' />
@@ -68,18 +68,18 @@
     </svg>
 
 
-    <svg id='tetTogStar' class='tetTogStar' width='0 ' height='0' viewBox='-600 -600 1200 1200'></svg>
+    <svg id='tetTogStar ' class='tetTogStar glow-effect' width='0 ' height='0' viewBox='-600 -600 1200 1200'></svg>
 
     <svg id='playSVG' width='200' height='200' viewBox='-60 -60 120 120' style='margin-top:10px'>
-      <g class='touchElement' id='buttPlayPause'>
+      <g class='touchElement glow-effect' id='buttPlayPause'>
         <title> click to play the everting motion</title>
         <circle cx='0' cy='0' r='20' />
         <polygon id='playPausePoly' points='-7 -10 -7 10 13 0' fill='#fff' />
       </g>
-      <g class='touchElement' id='clockRing'>
+      <g class='touchElement  ' id='clockRing'>
         <title> drag to evert the band</title>
         <circle cx='0' cy='0' r='40' fill='none' stroke='#555' stroke-width='26' />
-        <circle id='clockHand' r='12' fill='#fff' />
+        <circle id='clockHand' r='10' fill='#fff' />
       </g>
     </svg>
 
@@ -806,47 +806,64 @@
 
 
 
+// Update the canvas position when the window is resized
+var canvasPosition = document.getElementById('renderCanvasE').getBoundingClientRect();
+window.addEventListener('resize', debounce(function () {
+    canvasPosition = document.getElementById('renderCanvasE').getBoundingClientRect();
+}, 250));
 
-        var canvasPosition = document.getElementById('renderCanvasE').getBoundingClientRect();
+// Event listener for the click on renderCanvasE
+document.getElementById('renderCanvasE').addEventListener('click', function (evt) {
+    // Calculate the click position relative to the canvas
+    const clickX = evt.clientX - canvasPosition.left;
+    const clickY = evt.clientY - canvasPosition.top;
 
-        // Update canvasPosition on window resize
-        window.addEventListener('resize', function () {
-          canvasPosition = document.getElementById('renderCanvasE').getBoundingClientRect();
-        });
+    console.log("Canvas clicked at: ", clickX, clickY);
 
+    // Chart.js method to find the nearest point
+    var points = chart.getElementsAtEventForMode(evt, 'nearest', { intersect: false }, true);
+    if (points.length) {
+        var nearestPoint = points[0];
+        const dataPoint = chart.data.datasets[nearestPoint.datasetIndex].data[nearestPoint.index];
+        nu_i = getIndexFromLinspace(dataPoint.x);
+        nui_to_n(nu_i);
 
-        document.getElementById('renderCanvasE').addEventListener('click', function (evt) {
-          requestAnimationFrame(function () {
-            const clickedElement = document.elementFromPoint(evt.clientX, evt.clientY);
+        plotClicked = new CustomEvent('plotClicked', { detail: { nu_i: nu_i, n: n } });
+        document.body.dispatchEvent(plotClicked);
 
-            // Calculate the click position relative to the canvas
-            var clickX = evt.clientX - canvasPosition.left;
-            var clickY = evt.clientY - canvasPosition.top;
+        refresh = true;
+    }
+});
 
-            // Use Chart.js method to find the nearest point
-            var points = chart.getElementsAtEventForMode(evt, 'nearest', { intersect: false }, false);
+function debounce(func, wait) {
+    var timeout;
+    return function () {
+        var context = this, args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+            func.apply(context, args);
+        }, wait);
+    };
+}
 
-            if (points.length) {
-              // Assuming you want to work with the nearest point
-              var nearestPoint = points[0];
-              var datasetIndex = nearestPoint.datasetIndex;
-              var index = nearestPoint.index;
+ 
 
-              // Access the data point as an object
-              const dataPoint = chart.data.datasets[datasetIndex].data[index];
+// Debounce function to limit the rate at which a function can fire
+function debounce(func, wait, immediate) {
+  var timeout;
+  return function() {
+    var context = this, args = arguments;
+    var later = function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+}
 
-              // Your logic here (e.g., updating nu_i and dispatching events)
-              nu_i = getIndexFromLinspace(dataPoint.x);
-              nui_to_n(nu_i);
-
-              plotClicked = new CustomEvent('plotClicked', { detail: { nu_i: nu_i, n: n } });
-
-              document.body.dispatchEvent(plotClicked);
-
-              refresh = true;
-            }
-          })
-        });
 
 
         document.body.addEventListener('plotClicked', function (e) {
@@ -1212,54 +1229,7 @@
           }
         });
         // energy changed during the tour
-
-        ebID('buttShowEnergy').addEventListener('tourEnergy', function (event) {
-
-          nu_i = event.detail.nu_i;
-          n = event.detail.n;
-          showEnergy = true;
-          // console.log(`index inside the show energy: ${nu_i} `);
-          contentE.style.height = '25%';
-          //nu_i = parseInt(nuSlider.getValue());
-          createChart(nu_i);
-          document.body.addEventListener('nuiChanged', function () {
-            deleteDataset(chart, 'Marker');
-            deleteDataset(chart, 'cursor1');
-            deleteDataset(chart, 'cursor2');
-
-            pushDataset(chart, nu_i - 1);
-
-            if (showKappa == true) {
-              contentK.style.top = '25%';
-            }
-
-          });
-          document.body.dispatchEvent(energyChanged);
-
-          document.body.addEventListener('nChanged', function (e) {
-            deleteDataset(chart, 'Marker');
-            deleteDataset(chart, 'cursor1');
-            deleteDataset(chart, 'cursor2');
-
-            pushDataset(chart, nu_i - 1);
-          });
-          document.body.addEventListener('plotClicked', function (e) {
-            nu_i = e.detail.nu_i;
-            n = e.detail.n;
-            deleteDataset(chart, 'Marker');
-            deleteDataset(chart, 'cursor1');
-            deleteDataset(chart, 'cursor2');
-
-            pushDataset(chart, nu_i - 1);
-          });
-
-          nui_to_n(nu_i);
-
-          refresh = true;
-          // Create the chart when showEnergy is true
-
-        });
-
+ 
 
         ////////////////////////////////////////////////////////////////
         // create the chart for curvature 
@@ -1368,8 +1338,7 @@
         }
       }, 1000); // Adjust the delay as needed
     }
-
-
+ 
 
     // Function to simulate a click
     function simulateClick(elementId) {
@@ -1514,7 +1483,10 @@
     ////////////////////////////////////////////////////////////////
 
     ///     starting the tour 
-    const tour = new Shepherd.Tour({
+    const tour = new Shepherd.Tour(
+      {
+    
+      
       defaultStepOptions: {
         cancelIcon: {
           enabled: true
@@ -1524,8 +1496,7 @@
       }
     });
 
-
-  
+ 
     
 
     tour.addStep({
@@ -1686,7 +1657,7 @@
             simulateClick('buttAlignAxis');
             setTimeout(() => tour.next(), 2000); // Proceed to next step after the action
           });
-        }
+         }
       }
     });
     tour.addStep({
@@ -1702,7 +1673,7 @@
             simulateClick('buttAlignPlane');
             setTimeout(() => tour.next(), 2000); // Proceed to next step after the action
           });
-        }
+         }
       }
     });
 
@@ -1844,7 +1815,7 @@
       },
       when: {
         show: function () {
-          const index = 200; // Example index
+          const index = 40; // Example index
           nu_i = index;
           const coordinates = getPixelCoordinatesForIndex(index);
 
@@ -1995,6 +1966,7 @@
     // Start the tour
     var showTour = true;
     window.startTour = function () {
+      
       const cursor = document.querySelector('.cursor');
       if (cursor) {
         cursor.style.display = 'block'; // Show the cursor
@@ -2017,6 +1989,9 @@
 
     // Start tour when "Start Tour" button is clicked
     ebID('startTourBtn').addEventListener('click', function () {
+
+
+
       window.startTour();
       ebID('tourModal').style.display = 'none'; // Hide modal
     });
