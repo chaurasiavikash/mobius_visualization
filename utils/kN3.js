@@ -990,8 +990,8 @@ var createChart = function(nu_i) {
     },
     options: {
 onClick: function(evt){
-  const points = chart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, false);
-
+  const points = chart.getElementsAtEventForMode(evt, 'nearest', { intersect: false }, true);
+  console.log("chart clicked");
   if (points.length) {
     const firstPoint = points[0];
     const datasetIndex = firstPoint.datasetIndex;
