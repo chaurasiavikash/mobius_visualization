@@ -323,11 +323,12 @@ body {
   background-color:#555;
   border:none;
   color:#fff;
-  width:180px;
-  height:40px;
-  font-size:16px;
-  margin:10px 0;
-  border-radius:12px;
+  width: 15vw; /* Adjust the width relative to the viewport width */
+  height: 5vh; /* Adjust the height relative to the viewport height */
+  margin: 1vh 0; /* Responsive vertical margin */
+  border-radius: 12px; /* This can remain in pixels as it's a small, fixed-size value */
+  font-size: 1.6vh; /* Adjust font size relative to the viewport height */
+
   text-align:center;
   text-decoration:none;
   display:inline-block;
