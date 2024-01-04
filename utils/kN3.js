@@ -852,13 +852,13 @@ var contentE ;
 var content  ;
 var contentK  ;
 var contentPath  ;
-var contentKWidth;
+var contentEWidth;
 
 
 var x_legend = [];
 
 var legendCount = 13;
-var legendSpacing = contentKWidth / (legendCount + 1);
+var legendSpacing = 40*contentEWidth / (legendCount + 1);
 
 for (var i = 1; i <= legendCount; i++) {
   x_legend.push(i * legendSpacing);
@@ -1091,7 +1091,8 @@ onClick: function(evt){
             color: 'white', // Set the legend labels' color to white
             font: {
               size: 12 // Increase the font size for legend labels
-            }
+            },
+            usePointStyle:true
           },
           //   align: 'start'  // Spread out legend labels to occupy the same space as the horizontal axis
 
@@ -1176,7 +1177,7 @@ onClick: function(evt){
                 size: 16
               },
               desiredX: x_legend[i], // Assign the x-location of the legend label from x_legend array
-
+              usePointStyle: true  // Use the same style as points for legend symbols
             },
             align: 'start' // Spread out legend labels to occupy the same space as the horizontal axis
           }
@@ -1302,7 +1303,8 @@ var  createchartK = function(kappa) {
             color: 'white', // Set the legend labels' color to white
             font: {
               size: 16 // Increase the font size for legend labels
-            }
+            },
+            usePointStyle:true,
           },
 
         },
