@@ -564,3 +564,16 @@ body {
   }
 }
 
+svg {
+  width: 80%; /* Or another appropriate percentage */
+  height: auto; /* Maintain the aspect ratio */
+  /* Adjust margin-top or other properties as needed */
+}
+
+@media (max-width: 600px) {
+  svg {
+    width: 80%; /* Larger percentage for smaller screens */
+    height:auto%; /* Larger percentage for smaller screens */
+    /* Further adjustments as needed */
+  }
+}
