@@ -319,64 +319,6 @@
   });
 
 
-  // view angle 
-
-  tour.addStep({
-    title: 'view axis',
-    text: `view along the axis of symmetry.`,
-    attachTo: {
-      element: '#buttAlignAxis',
-      on: 'bottom'
-    },
-    when: {
-      show: function () {
-        moveCursorToElement('buttAlignAxis', () => {
-          simulateClick('buttAlignAxis');
-          setTimeout(() => tour.next(), 2000); // Proceed to next step after the action
-        });
-       }
-    }
-  });
-  tour.addStep({
-    title: 'view axis',
-    text: `view along the plane of symmetry.`,
-    attachTo: {
-      element: '#buttAlignPlane',
-      on: 'bottom'
-    },
-    when: {
-      show: function () {
-        moveCursorToElement('buttAlignPlane', () => {
-          simulateClick('buttAlignPlane');
-          setTimeout(() => tour.next(), 2000); // Proceed to next step after the action
-        });
-       }
-    }
-  });
-
-  // change the camera angle to default
-  alpha = 6.185710546084945;
-  beta = 1.0989063024750556;
-  var tourCamera;
-  tour.addStep({
-    title: 'view angle',
-    text: `hold the left click and move the mouse to rotate the band.`,
-    attachTo: {
-      element: '#renderCanvas',
-      on: 'bottom'
-    },
-    when: {
-      show: function () {
-        moveCursorToElement('renderCanvas', () => {
-
-          setTimeout(() => tour.next(), 3000); // Proceed to next step after the action
-        });
-        tourCamera= new CustomEvent('tourCamera', { detail: { alpha: alpha, beta: beta } });
-        ebID('renderCanvas').dispatchEvent(tourCamera);
-      }
-    }
-  });
-
   // eversion path 
   tour.addStep({
     title: 'view eversion path',
@@ -606,6 +548,64 @@
     }
   });
 
+
+  // view angle 
+
+  tour.addStep({
+    title: 'view axis',
+    text: `view along the axis of symmetry.`,
+    attachTo: {
+      element: '#buttAlignAxis',
+      on: 'bottom'
+    },
+    when: {
+      show: function () {
+        moveCursorToElement('buttAlignAxis', () => {
+          simulateClick('buttAlignAxis');
+          setTimeout(() => tour.next(), 2000); // Proceed to next step after the action
+        });
+       }
+    }
+  });
+  tour.addStep({
+    title: 'view axis',
+    text: `view along the plane of symmetry.`,
+    attachTo: {
+      element: '#buttAlignPlane',
+      on: 'bottom'
+    },
+    when: {
+      show: function () {
+        moveCursorToElement('buttAlignPlane', () => {
+          simulateClick('buttAlignPlane');
+          setTimeout(() => tour.next(), 2000); // Proceed to next step after the action
+        });
+       }
+    }
+  });
+
+  // change the camera angle to default
+  alpha = 6.185710546084945;
+  beta = 1.0989063024750556;
+  var tourCamera;
+  tour.addStep({
+    title: 'view angle',
+    text: `hold the left click and move the mouse to rotate the band.`,
+    attachTo: {
+      element: '#renderCanvas',
+      on: 'bottom'
+    },
+    when: {
+      show: function () {
+        moveCursorToElement('renderCanvas', () => {
+
+          setTimeout(() => tour.next(), 3000); // Proceed to next step after the action
+        });
+        tourCamera= new CustomEvent('tourCamera', { detail: { alpha: alpha, beta: beta } });
+        ebID('renderCanvas').dispatchEvent(tourCamera);
+      }
+    }
+  });
 
 
   tour.on('complete', function () {

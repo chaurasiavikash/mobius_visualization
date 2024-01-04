@@ -37,7 +37,23 @@ body {
   background-color:#f6ebeb;
   z-index:1
   }
-  .leftbar, .rightbar {
+  .leftbar  {
+     text-align: center;
+    font-family: Monospace;
+    position: fixed;
+    width: 200px;
+    height: 100%;
+    background: none;
+    transition: width .9s;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x:hidden;
+    z-index: 1000;
+    padding-right: 2px;
+    box-sizing: border-box;
+  }
+   .rightbar {
      text-align: center;
     font-family: Monospace;
     position: fixed;
