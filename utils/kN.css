@@ -37,25 +37,40 @@ body {
   background-color:#f6ebeb;
   z-index:1
   }
+  .leftbar, .rightbar {
+     text-align: center;
+    font-family: Monospace;
+    position: fixed;
+    width: 12%;
+    height: 100%;
+    background: none;
+    transition: width .9s;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x:hidden;
+    z-index: 1000;
+    padding-right: 2px;
+    box-sizing: border-box;
+  }
   
-  .leftbar,.rightbar {
-  text-align:center;
-  font-family:Monospace;
-  position:fixed;
-  width:12%;
-  height:100%;
-  background:none;
-  transition:width .9s;
-  z-index:3
+  ::-webkit-scrollbar {
+    width:  15px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #fff;
+    border-radius: 10px;
   }
   
   .leftbar {
-  left:0
+    left: 0;
   }
   
   .rightbar {
-  right:3%
+    right: 0;
   }
+  
   
   .content {
   position:absolute;
@@ -64,26 +79,26 @@ body {
   left:0;
   right:0
   }
+  .contentE, .contentK {
+    position: absolute;
+    background-color: transparent;
+    z-index: 2;
+  }
   
   .contentE {
-  position:absolute;
-  top:0;
-  left:12%;
-  width:76%;
-  height:35%;
-  background-color:transparent;
-  z-index:2
+    top: 0;
+    left: 12%;
+    width: 76%;
+    height: 35vh; /* Use viewport height for responsiveness */
   }
   
   .contentK {
-  position:absolute;
-  top:10%;
-  left:12%;
-  width:30%;
-  height:18.54%;
-  background-color:transparent;
-  z-index:2
+    top: 10%;
+    left: 12%;
+    width: 30vw; /* Use viewport width for responsiveness */
+    height: 18.54vh; /* Use viewport height for responsiveness */
   }
+  
   
   .contentPath {
   position:absolute;
@@ -320,28 +335,24 @@ body {
   }
   
   .button {
-  background-color:#555;
-  border:none;
-  color:#fff;
-  width: 15vw; /* Adjust the width relative to the viewport width */
-  height: 5vh; /* Adjust the height relative to the viewport height */
-  margin: 1vh 0; /* Responsive vertical margin */
-  border-radius: 12px; /* This can remain in pixels as it's a small, fixed-size value */
-  font-size: 1.6vh; /* Adjust font size relative to the viewport height */
-
-  text-align:center;
-  text-decoration:none;
-  display:inline-block;
-  
-  font-family:Monospace;
-  outline:none;
- 
-  position:relative;
-  cursor:pointer;
-  
-  opacity:0;
-  transition:opacity .5s
-  }
+    background-color:#555;
+    border:none;
+    color:#fff;
+    height:40px;
+    margin:10px 0;
+    text-align:center;
+    text-decoration:none;
+    display:inline-block;
+    font-size:16px;
+    font-family:Monospace;
+    outline:none;
+    width:180px;
+    position:relative;
+    cursor:pointer;
+    border-radius:12px;
+    opacity:.7;
+    transition:opacity .5s
+    }
   
   .leftbar:hover .button,.rightbar:hover .button {
   opacity:1
@@ -478,3 +489,55 @@ body {
     opacity:1;
     transition:opacity 1s
     }
+
+ /* resizing for smaller screens */
+    .button {
+      width: 90%; /* Or another suitable percentage */
+      /* Other styles... */
+    }
+    @media (max-width: 600px) {
+      .button {
+        width: 100%; /* Full width in smaller containers */
+        font-size: 14px; /* Slightly smaller font size */
+        height: 35px; /* Adjust height as needed */
+        /* Other adjustments... */
+      }
+    }
+    /* Adjust font size for medium screens */
+@media (max-width: 768px) {
+  .button {
+    font-size: 0.9em; /* Slightly smaller font size */
+  }
+}
+
+/* Adjust font size for small screens */
+@media (max-width: 480px) {
+  .button {
+    font-size: 0.8em; /* Even smaller font size for very small screens */
+  }
+}
+
+
+@media (max-width: 768px) { /* Adjust for medium screens */
+  .contentE {
+    left: 5%; /* Adjust position */
+    width: 90%; /* Increase width */
+    height: 60vh; /* Adjust height */
+  }
+
+  .contentK {
+    top: 45%; /* Adjust position */
+    left: 5%;
+    width: 90%; /* Increase width */
+    height: 20vh; /* Adjust height */
+  }
+}
+
+@media (max-width: 480px) { /* Adjust for small screens */
+  .contentE, .contentK {
+    width: 95%; /* Further increase width */
+    left: 2.5%; /* Center the element */
+    /* Adjust height if needed */
+  }
+}
+

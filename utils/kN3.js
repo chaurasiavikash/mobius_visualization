@@ -1090,7 +1090,7 @@ onClick: function(evt){
             },
             color: 'white', // Set the legend labels' color to white
             font: {
-              size: 16 // Increase the font size for legend labels
+              size: 12 // Increase the font size for legend labels
             }
           },
           //   align: 'start'  // Spread out legend labels to occupy the same space as the horizontal axis
@@ -1141,7 +1141,7 @@ onClick: function(evt){
   });
 
   var ind = ind_energy.concat();
-  var legendBoxWidths = [20, 20, 20, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300]; // Example: Define desired x-coordinates for each legend label
+ // var legendBoxWidths = [20, 20, 20, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300]; // Example: Define desired x-coordinates for each legend label
 
   for (var i = 0; i < 13; i++) {
     var startIndex = ind[i][1];
