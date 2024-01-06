@@ -70,7 +70,7 @@
       </g>
     </svg>
 
- 
+
     <svg id='playSVG' width='200' height='200' viewBox='-60 -60 120 120' style='margin-top:10px'>
       <g class='touchElement glow-effect' id='buttPlayPause'>
         <title> click to play the everting motion</title>
@@ -90,7 +90,7 @@
           <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
           <feOffset in="blur" dx="0" dy="0" result="offsetBlur" />
           <feFlood flood-color="#FF7300" result="flood" />
-          <feComposite in="flood" in2="offsetBlur" operator="in" result="colorBlur"/>
+          <feComposite in="flood" in2="offsetBlur" operator="in" result="colorBlur" />
           <feMerge>
             <feMergeNode in="colorBlur" />
             <feMergeNode in="SourceGraphic" />
@@ -98,9 +98,9 @@
         </filter>
       </defs>
     </svg>
-    
 
-    
+
+
     <svg id='speedSlider' class='slider glow-effect' width='200' height='100' viewBox='-100 -25 200 50'>
       <title> slide to change the speed of eversion</title>
       <polygon fill='#555' points='-100 -20 -100 20 100 20 100 -20' />
@@ -114,7 +114,7 @@
       <rect width='38' height='38' x='-19' y='-19' />
       <text x='-100' y='-25'></text>
     </svg>
-    
+
   </div>
 
   <div class='rightbar'>
@@ -159,11 +159,11 @@
     <!-- <input class="jscolor" value="ab2567" data-jscolor="{format:'rgba', position:'right', width:181, height:101}"> -->
     <br>
     <br>
-      <g class="textElement">
-        <text> view angle </text>
-      </g>
-      <button class='button' id='buttAlignAxis' title='align the view with the axis of symmetry'> align axis </button>
-      <button class='button' id='buttAlignPlane' title='align the view with the best fit plane'> align plane </button>
+    <g class="textElement">
+      <text> view angle </text>
+    </g>
+    <button class='button' id='buttAlignAxis' title='align the view with the axis of symmetry'> align axis </button>
+    <button class='button' id='buttAlignPlane' title='align the view with the best fit plane'> align plane </button>
 
   </div>
 
@@ -215,8 +215,9 @@
 
 
     var yData = Array.from(energy).concat();
-    len_ydata = yData.length;
+    var len_ydata = yData.length;
     var xData = linspace(8.095, 85.4, len_ydata);
+
 
     'use strict';
 
@@ -689,23 +690,34 @@
           }
         }
 
-
+        function setSliderPosition(newValue) {
+          var slider = document.getElementById("energySlider");
+          if (slider) {
+            slider.value = newValue; // Set the slider value
+            // Trigger any event or function associated with the slider's change
+          }
+        }
 
         //#################################################################################
         //#################################################################################
 
-        // change number of tetrahedra ////////////////////////////////////////////////////
+        // change number of half twists ////////////////////////////////////////////////////
 
         ebID('buttNumOfTetMinus').addEventListener('click', function () {
           if (n > 3) {
             n = n - 2;
+
+            // change the position of the energy slider 
+
             document.body.dispatchEvent(nChanged);
+
             // document.body.dispatchEvent(nuiChanged);
           }
         });
         ebID('buttNumOfTetPlus').addEventListener('click', function () {
           if (n < 27) {
             n = n + 2;
+
             document.body.dispatchEvent(nChanged);
             // document.body.dispatchEvent(nuiChanged);
           }
@@ -745,6 +757,9 @@
           // modifying the slider and its limits when n is changed 
 
           nu_i = nu_opt;
+
+          // change the energy slider 
+          setSliderPosition(nu_i);
 
           init_parameters(nu_i)
           data_t0(nu_i);
@@ -807,63 +822,63 @@
 
 
 
-// Update the canvas position when the window is resized
-var canvasPosition = document.getElementById('renderCanvasE').getBoundingClientRect();
-window.addEventListener('resize', debounce(function () {
-    canvasPosition = document.getElementById('renderCanvasE').getBoundingClientRect();
-}, 250));
+        // // Update the canvas position when the window is resized
+        // var canvasPosition = document.getElementById('renderCanvasE').getBoundingClientRect();
+        // window.addEventListener('resize', debounce(function () {
+        //   canvasPosition = document.getElementById('renderCanvasE').getBoundingClientRect();
+        // }, 250));
 
-// Event listener for the click on renderCanvasE
-document.getElementById('renderCanvasE').addEventListener('click', function (evt) {
-    // Calculate the click position relative to the canvas
-    const clickX = evt.clientX - canvasPosition.left;
-    const clickY = evt.clientY - canvasPosition.top;
+        // // Event listener for the click on renderCanvasE
+        // document.getElementById('renderCanvasE').addEventListener('click', function (evt) {
+        //   // Calculate the click position relative to the canvas
+        //   const clickX = evt.clientX - canvasPosition.left;
+        //   const clickY = evt.clientY - canvasPosition.top;
 
-    console.log("Canvas clicked at: ", clickX, clickY);
+        //   console.log("Canvas clicked at: ", clickX, clickY);
 
-    // Chart.js method to find the nearest point
-    var points = chart.getElementsAtEventForMode(evt, 'nearest', { intersect: false }, true);
-    if (points.length) {
-        var nearestPoint = points[0];
-        const dataPoint = chart.data.datasets[nearestPoint.datasetIndex].data[nearestPoint.index];
-        nu_i = getIndexFromLinspace(dataPoint.x);
-        nui_to_n(nu_i);
+        //   // Chart.js method to find the nearest point
+        //   var points = chart.getElementsAtEventForMode(evt, 'nearest', { intersect: false }, true);
+        //   if (points.length) {
+        //     var nearestPoint = points[0];
+        //     const dataPoint = chart.data.datasets[nearestPoint.datasetIndex].data[nearestPoint.index];
+        //     nu_i = getIndexFromLinspace(dataPoint.x);
+        //     nui_to_n(nu_i);
 
-        plotClicked = new CustomEvent('plotClicked', { detail: { nu_i: nu_i, n: n } });
-        document.body.dispatchEvent(plotClicked);
+        //     plotClicked = new CustomEvent('plotClicked', { detail: { nu_i: nu_i, n: n } });
+        //     document.body.dispatchEvent(plotClicked);
 
-        refresh = true;
-    }
-});
+        //     refresh = true;
+        //   }
+        // });
 
-function debounce(func, wait) {
-    var timeout;
-    return function () {
-        var context = this, args = arguments;
-        clearTimeout(timeout);
-        timeout = setTimeout(function () {
-            func.apply(context, args);
-        }, wait);
-    };
-}
+        function debounce(func, wait) {
+          var timeout;
+          return function () {
+            var context = this, args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+              func.apply(context, args);
+            }, wait);
+          };
+        }
 
- 
 
-// Debounce function to limit the rate at which a function can fire
-function debounce(func, wait, immediate) {
-  var timeout;
-  return function() {
-    var context = this, args = arguments;
-    var later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    var callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
-}
+
+        // Debounce function to limit the rate at which a function can fire
+        function debounce(func, wait, immediate) {
+          var timeout;
+          return function () {
+            var context = this, args = arguments;
+            var later = function () {
+              timeout = null;
+              if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+          };
+        }
 
 
 
@@ -1230,13 +1245,11 @@ function debounce(func, wait, immediate) {
           }
         });
         // energy changed during the tour
- 
+
 
         ////////////////////////////////////////////////////////////////
         // create the chart for curvature 
         ////////////////////////////////////////////////////////////////
-
-
 
 
 
@@ -1278,9 +1291,92 @@ function debounce(func, wait, immediate) {
           }
         });
 
+        function positionSliderAbovePlot(slider, chart) {
+          var canvasRect = chart.canvas.getBoundingClientRect();
+          var chartArea = chart.chartArea;
+
+          var leftOffset = canvasRect.left + chartArea.left;
+          var topOffset = canvasRect.top + chartArea.bottom; // Positioning it just below the x-axis
+          var width = chartArea.right - chartArea.left;
+
+          slider.style.position = 'absolute';
+          slider.style.left = 15 + '%';
+          slider.style.top = 23 + '%';
+          slider.style.width = width + 'px';
+        }
+
+
+        function addSlider() {
+          var canvas = document.getElementById("renderCanvasE");
+          var slider = document.createElement("input");
+          slider.setAttribute("type", "range");
+          slider.setAttribute("id", "energySlider");
+          slider.setAttribute("min", "1");
+          slider.setAttribute("max", len_ydata.toString());
+          slider.classList.add("energySlider");
+
+          document.body.appendChild(slider);
+          positionSliderAbovePlot(slider, chart);
+
+          slider.addEventListener("input", function () {
+
+            // deleting the eversion path for efficiently dragging
+            meshDispose(tubeMid);
+            meshDispose(golf);
+            showMid = false;
+            buttonSwitchColor(ebID('buttShowMid'), showMid);
+
+            // updated nu value based on the slider
+            nu_i = parseInt(this.value);
+
+            // Convert the value from [0, 100] to [8.095, 85.4]
+
+            nui_to_n(nu_i);
+
+            plotClicked = new CustomEvent('plotClicked', { detail: { nu_i: nu_i, n: n } });
+            document.body.dispatchEvent(plotClicked);
+            ;
+          });
+        }
+
+        function removeSlider() {
+          var slider = document.getElementById("energySlider");
+          if (slider) {
+            slider.remove();
+          }
+        }
 
 
 
+
+        // window.addEventListener("resize", function () {
+        //   var slider = document.getElementById("energySlider");
+        //   var canvas = document.getElementById("renderCanvasE");
+        //   if (slider && canvas) {
+        //     positionSliderAbovePlot(slider, canvas);
+        //   }
+        // });
+
+        ebID("buttShowEnergy").addEventListener('click', function () {
+          if (showEnergy) {
+            addSlider(); // Add the slider only if showEnergy is true
+            // When the slider is created
+            var energySlider = document.getElementById('energySlider');
+            if (energySlider) {
+              // Initially set the opacity to 1
+              energySlider.style.opacity = 1;
+
+              // Set a timeout to change the opacity back to 0 after a specified time
+              setTimeout(function () {
+                energySlider.style.opacity = '';
+              }, 2000); // 5000 milliseconds = 5 seconds
+            }
+          } else {
+            removeSlider(); // Remove the slider only if showEnergy is false
+          }
+
+
+        });
 
         ////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////
@@ -1323,7 +1419,7 @@ function debounce(func, wait, immediate) {
     });
 
 
-    
+
     // Start the tour
 
     // ...add more steps for other buttons...
@@ -1331,7 +1427,7 @@ function debounce(func, wait, immediate) {
     // Start the tour
     var showTour = true;
     window.startTour = function () {
-      
+
       const cursor = document.querySelector('.cursor');
       if (cursor) {
         cursor.style.display = 'block'; // Show the cursor

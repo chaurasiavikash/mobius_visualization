@@ -1,4 +1,4 @@
-@font-face {
+@@font-face {
   font-family: 'Roboto';
   src: url('Roboto-Regular.ttf') format('truetype');
   font-weight: normal;
@@ -57,7 +57,7 @@ body {
      text-align: center;
     font-family: Monospace;
     position: fixed;
-    width: 12%;
+    width: 12.2%;
     height: 100%;
     background: none;
     transition: width .9s;
@@ -508,9 +508,71 @@ body {
 
 
 
-     
+  /* energy slider css  */
+  .energySlider {
+    position: absolute;
+    left:10%;
+    top:0%;
+    z-index: 3000;
     
+    /* Initial CSS - will be updated by JavaScript */
+}
+     
 
+
+/* Hide the slider by default */
+.energySlider {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+/* Show the slider when hovering over it */
+.energySlider:hover {
+  opacity: 1;
+}
+/* * Change the color of the portion of the slider that is dragged over */ */
+/* WebKit Browsers */
+.energySlider::-webkit-slider-thumb {
+  
+  background: rgb(112, 204, 144);
+  width: 20px; /* Width of the rectangle */
+  height: 20px; /* Height of the rectangle */
+   border-radius: 5px; /* Adjust for rounded corners */
+   cursor: pointer;
+  /* Other styling */
+}
+
+.energySlider::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  background: rgb(168, 190, 135);
+  /* Other styling */
+}
+
+/* Mozilla Browsers */
+.energySlider::-moz-range-thumb {
+  background: rgb(101, 162, 58);
+  /* Other styling */
+}
+
+.energySlider::-moz-range-progress {
+  background: rgb(162, 192, 117);
+  /* Other styling */
+}
+ 
+
+.energySlider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: rgb(111, 208, 155);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+ 
+/* /////////////
+/////////////
+/////////////
+///////////// */
 
 
  /* resizing for smaller screens */
@@ -541,28 +603,43 @@ body {
 }
 
 
-@media (max-width: 768px) { /* Adjust for medium screens */
+
+
+@media (orientation: landscape) {
   .contentE {
-    left: 5%; /* Adjust position */
-    width: 90%; /* Increase width */
-    height: 60vh; /* Adjust height */
+    height: 60vh; /* Adjust height for landscape mode */
+  }
+}
+
+@media (max-width: 768px) {
+  .contentE {
+    left: 5%;
+    width: 90%;
+    height: 50vh; /* Adjust height for medium screens */
   }
 
   .contentK {
-    top: 45%; /* Adjust position */
+    top: 45%;
     left: 5%;
-    width: 90%; /* Increase width */
-    height: 20vh; /* Adjust height */
+    width: 50%;
+    height: 50vh;
   }
 }
 
-@media (max-width: 480px) { /* Adjust for small screens */
-  .contentE, .contentK {
-    width: 95%; /* Further increase width */
-    left: 2.5%; /* Center the element */
-    /* Adjust height if needed */
+@media (max-width: 480px) {
+  .contentE  {
+    width: 95%;
+    left: 2.5%;
+    height: 40vh; /* Adjust height for small screens */
+  }
+   .contentK {
+    width: 50%;
+    left: 2.5%;
+    height: 40vh; /* Adjust height for small screens */
   }
 }
+
+ 
 
 svg {
   width: 80%; /* Or another appropriate percentage */
@@ -573,7 +650,8 @@ svg {
 @media (max-width: 600px) {
   svg {
     width: 80%; /* Larger percentage for smaller screens */
-    height:auto%; /* Larger percentage for smaller screens */
+    height:auto; /* Larger percentage for smaller screens */
     /* Further adjustments as needed */
   }
 }
+

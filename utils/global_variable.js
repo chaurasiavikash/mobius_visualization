@@ -47,7 +47,7 @@ var refresh = false;
 var colorScheme = 1;
 var maxColor = 2;
 
-
+ 
 
 var hx0;
 var hy0;

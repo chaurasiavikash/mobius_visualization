@@ -989,39 +989,12 @@ var createChart = function(nu_i) {
       datasets: [],
     },
     options: {
-onClick: function(evt){
-  const points = chart.getElementsAtEventForMode(evt, 'nearest', { intersect: false }, true);
-  console.log("chart clicked");
-  if (points.length) {
-    const firstPoint = points[0];
-    const datasetIndex = firstPoint.datasetIndex;
-    const index = firstPoint.index;
-
-    // Access the data point as an object
-    const dataPoint = chart.data.datasets[datasetIndex].data[index];
-
-    // Store the x value in nu_i
-    nu_i = getIndexFromLinspace(dataPoint.x); // Assuming nu_i should hold the x value of the clicked point
-    // updaign the value of n
-     
-    // Updating the value of n
-    nui_to_n(nu_i);
-    
-    // Create and dispatch the custom event with the updated values
-    plotClicked = new CustomEvent('plotClicked', { detail: { nu_i: nu_i, n: n } });
- 
-    document.body.dispatchEvent(plotClicked);
-
-
-    refresh = true;
-  }
-},
-
+  
       maintainAspectRatio: false, // Disable aspect ratio to fit the canvas
       scales: {
         x: {
           min: xData[0] - .4,
-          max: xData[xData.length - 1],
+          max: xData[len_ydata - 1],
           type: "linear",
           position: "bottom",
           ticks: {
@@ -1214,9 +1187,9 @@ var  createchartK = function(kappa) {
 
   var yticklocation = linspace(-1 * klim, klim, 4);
 
-  var yData = Array.from(kappa).concat();
-  //var xData = linspace(1, yData.length, yData.length);
-  var xData = linspace(0, 1, yData.length);
+  var kappa_y = Array.from(kappa).concat();
+  //var kappa_x = linspace(1, kappa_y.length, kappa_y.length);
+  var kappa_x = linspace(0, 1, kappa_y.length);
 
 
   var ctxK = document.getElementById('renderCanvasK').getContext('2d', { willReadFrequently: true });
@@ -1314,32 +1287,32 @@ var  createchartK = function(kappa) {
   });
   
   
-  var indices = [];
-  var temp = Math.round(N / (1 * n));
-  for (var i = 1; i < n + 1; i++) {
-    indices[i - 1] = (i - 1) * temp + Math.round(temp / 2);
-  }
+  // var indices = [];
+  // var temp = Math.round(N / (1 * n));
+  // for (var i = 1; i < n + 1; i++) {
+  //   indices[i - 1] = (i - 1) * temp + Math.round(temp / 2);
+  // }
  
  
-  chartK.data.datasets.push({
-    label: 'markers',
-    data: indices.map((index) => ({ x: xData[index], y: yData[index] })),
-    backgroundColor: 'red',
-    borderColor: 'red',
-    pointBackgroundColor: 'red',
-    pointBorderColor: 'red',
-    pointRadius: 6,
-    pointHoverRadius: 6,
-    type: 'scatter',
-    order: 1,
-  });
+  // chartK.data.datasets.push({
+  //   label: 'markers',
+  //   data: indices.map((index) => ({ x: kappa_x[index], y: kappa_y[index] })),
+  //   backgroundColor: 'red',
+  //   borderColor: 'red',
+  //   pointBackgroundColor: 'red',
+  //   pointBorderColor: 'red',
+  //   pointRadius: 6,
+  //   pointHoverRadius: 6,
+  //   type: 'scatter',
+  //   order: 1,
+  // });
 
-  for (var i = 0; i < yData.length - 1; i++) {
+  for (var i = 0; i < kappa_y.length - 1; i++) {
     chartK.data.datasets.push({
       label: 'curvature of the midline',
       data: [
-        { x: xData[i], y: yData[i] },
-        { x: xData[i + 1], y: yData[i + 1] },
+        { x: kappa_x[i], y: kappa_y[i] },
+        { x: kappa_x[i + 1], y: kappa_y[i + 1] },
       ],
       backgroundColor: 'rgba(0, 0, 0, 0)',
       borderColor: jetK(i),
