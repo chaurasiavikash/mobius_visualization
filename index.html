@@ -254,6 +254,7 @@
       var createScene = function () {
         // create a basic BJS Scene object
         var scene = new BABYLON.Scene(engine);
+ 
         scene.useRightHandedSystem = true;
         scene.clearColor = new BABYLON.Color3(0.3254901960784314, 0.396078431372549, 0.3686274509803922);
         // camera Math.PI
@@ -276,6 +277,15 @@
         // Set the target of the light to be the camera position
         light.setDirectionToTarget(camera.position);
         // light.parent = camera;
+
+       // environment light 
+       // Assuming 'scene' is your Babylon.js scene
+
+//   // Load an HDR environment texture
+//   var hdrTexture = new BABYLON.HDRCubeTexture("./utils/sunset.hdr", scene, 512);
+// scene.environmentTexture = hdrTexture;
+
+
 
         var white = new BABYLON.StandardMaterial('texture1', scene);
         var cyan = new BABYLON.StandardMaterial('texture1', scene);
