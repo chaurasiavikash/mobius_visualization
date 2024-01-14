@@ -53,22 +53,24 @@ body {
     padding-right: 2px;
     box-sizing: border-box;
   }
-   .rightbar {
-     text-align: center;
+  .rightbar {
+    text-align: center;
     font-family: Monospace;
     position: fixed;
-    width: 12.2%;
+    width: 12.3%;
     height: 100%;
     background: none;
     transition: width .9s;
-    display: flex;
-    flex-direction: column;
+     flex-direction: column;
+    justify-content: center; /* Centers items vertically */
+    align-items: center; /* Centers items horizontally */
     overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x:hidden;
+    overflow-x: hidden;
     z-index: 1000;
     padding-right: 2px;
     box-sizing: border-box;
-  }
+}
+
   
   ::-webkit-scrollbar {
     width:  15px;
@@ -351,6 +353,7 @@ body {
   }
   
   .button {
+    padding-left:20px;
     background-color:#555;
     border:none;
     color:#fff;
@@ -367,7 +370,8 @@ body {
     cursor:pointer;
     border-radius:12px;
     opacity:.7;
-    transition:opacity .5s
+    transition:opacity .5s;
+    margin-left:auto;
     }
   
   .leftbar:hover .button,.rightbar:hover .button {
@@ -401,7 +405,7 @@ body {
   }
   
   50% {
-  background-position:400% 0
+  background-position:300% 0
   }
   
   100% {
@@ -444,8 +448,8 @@ body {
   cursor:pointer;
   border-radius:12px;
   opacity:.7;
-  transition:opacity .5s
-  }
+  transition:opacity .5s;
+   }
   
   .leftbar:hover .button,.rightbar:hover .button {
   opacity:1

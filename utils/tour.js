@@ -189,8 +189,8 @@
    
  
    tour.addStep({
-     title: 'Increase Twists',
-     text: `This button increases the number of half twists of the optimal band.`,
+     title: 'increase twists',
+     text: `click to increase the number of half twists of an optimal band`,
      attachTo: {
        element: '#buttNumOfTetPlus',
        on: 'bottom'
@@ -209,8 +209,8 @@
    // Similar setup for 'buttNumOfTetMinus'
  
    tour.addStep({
-     title: 'decrease Twists',
-     text: `This button decreases the number of half twists of the optimal band.`,
+     title: 'decrease twists',
+     text: `click to decrease the number of half twists of an optimal band`,
      attachTo: {
        element: '#buttNumOfTetMinus',
        on: 'bottom'
@@ -231,7 +231,7 @@
  
    tour.addStep({
      title: 'play',
-     text: `This button plays the everting motion. Drag the clock right to modify the everting states.`,
+     text: `click to play/pause the everting motion, move the clock handle to control the motion`,
      attachTo: {
        element: '#playPausePoly',
        on: 'bottom'
@@ -253,8 +253,8 @@
    tourSliderMin = 4;
    tourSliderMax = 100;
    tour.addStep({
-     title: 'Adjust Speed',
-     text: 'Click on this slider to change the speed of eversion.',
+     title: 'adjust speed',
+     text: 'drag the slider to change the speed of eversion',
      attachTo: {
        element: '#speedSlider',
        on: 'bottom'
@@ -269,8 +269,8 @@
      }
    });
    tour.addStep({
-     title: 'Adjust Speed',
-     text: 'Click on this slider to change the speed of eversion.',
+     title: 'adjust speed',
+     text: 'drag the slider to change the speed of eversion',
      attachTo: {
        element: '#speedSlider',
        on: 'bottom'
@@ -295,8 +295,8 @@
    tourSliderMax = 100;
  
    tour.addStep({
-     title: 'Adjust band width',
-     text: 'Click on this slider to change the width of the band.',
+     title: 'adjust band width',
+     text: 'drag the slider to change the width of a band',
      attachTo: {
        element: '#hingeLengthSlider',
        on: 'bottom'
@@ -313,8 +313,8 @@
      }
    });
    tour.addStep({
-     title: 'Adjust band width',
-     text: 'Click on this slider to change the width of the band.',
+     title: 'adjust band width',
+     text: 'drag the slider to change the width of a band',
      attachTo: {
        element: '#hingeLengthSlider',
        on: 'bottom'
@@ -334,7 +334,7 @@
    // eversion path 
    tour.addStep({
      title: 'view eversion path',
-     text: `path of eversion of a point on the midline.`,
+     text: `path followed by a point on the midline of a band during eversion`,
      attachTo: {
        element: '#buttShowMid',
        on: 'bottom'
@@ -350,7 +350,7 @@
    });
    tour.addStep({
      title: 'view unit',
-     text: `1/n th of the band with n half twists.`,
+     text: `view 1/n th of a band with n half twists`,
      attachTo: {
        element: '#buttShowUnit',
        on: 'bottom'
@@ -366,7 +366,7 @@
    });
    tour.addStep({
      title: 'view unit',
-     text: `1/n th of the band with n half twists.`,
+     text: `view 1/n th of a band with n half twists`,
      attachTo: {
        element: '#buttShowUnit',
        on: 'bottom'
@@ -384,7 +384,7 @@
  
    tour.addStep({
      title: 'view energy plot',
-     text: `plot of the bending energy of stable bands versus the torsion of the midline of the band.`,
+     text: `plot of  bending energy of each stable band  versus the torsion of the midline of the band`,
      attachTo: {
        element: '#buttShowEnergy',
        on: 'bottom'
@@ -402,7 +402,7 @@
  
    tour.addStep({
      title: 'view curvature',
-     text: `curvature of the midline during eversion.`,
+     text: `plot of the dimensionless normal curvature of the midline of a band  versus dimensionless arclength`,
      attachTo: {
        element: '#buttShowKappa',
        on: 'bottom'
@@ -436,15 +436,15 @@
      }
    });
    tour.addStep({
-     title: 'Modify Band',
-     text: 'View bands with a different midline torsion using this slider.',
+     title: 'choose band',
+     text: 'drag the slider to choose a band with midline of choosen dimensionless torsion',
      attachTo: {
        element: '#energySlider',
        on: 'bottom'
      },
      when: {
        show: function() {
-         nu_i = 400;
+         nu_i = 300;
          nui_to_n(nu_i); 
          simulateClickOnHtmlSlider('energySlider', nu_i, () => {
            // Additional actions after click simulation
@@ -464,42 +464,42 @@
    });
    
  
-   tour.addStep({
-     title: 'modify band',
-     text: 'view bands with a different midline torsion using this slider.',
-     attachTo: {
-       element: '#energySlider',
-       on: 'bottom'
-     },
-     when: {
-       show: function () {
+  //  tour.addStep({
+  //    title: 'modify band',
+  //    text: 'view bands with a different midline torsion using this slider.',
+  //    attachTo: {
+  //      element: '#energySlider',
+  //      on: 'bottom'
+  //    },
+  //    when: {
+  //      show: function () {
  
-     nu_i = 100;
-     nui_to_n(nu_i);
+  //    nu_i = 100;
+  //    nui_to_n(nu_i);
    
-     simulateClickOnHtmlSlider('energySlider', nu_i, () => {
+  //    simulateClickOnHtmlSlider('energySlider', nu_i, () => {
    
-     });
+  //    });
      
-     plotClicked = new CustomEvent('plotClicked', { detail: { nu_i: nu_i, n: n } });
-     document.body.dispatchEvent(plotClicked);
-      setTimeout(() => tour.next(), 2000);
-       // Directly modify the slider's style to make it visible
-       var energySlider = document.getElementById('energySlider');
-       if (energySlider) {
-         energySlider.style.opacity = 0; // Adjust the opacity to make it visible
-       }
-       }
+  //    plotClicked = new CustomEvent('plotClicked', { detail: { nu_i: nu_i, n: n } });
+  //    document.body.dispatchEvent(plotClicked);
+  //     setTimeout(() => tour.next(), 2000);
+  //      // Directly modify the slider's style to make it visible
+  //      var energySlider = document.getElementById('energySlider');
+  //      if (energySlider) {
+  //        energySlider.style.opacity = 0; // Adjust the opacity to make it visible
+  //      }
+  //      }
        
-     }
-   });
+  //    }
+  //  });
   
  
  
    // going back to the optimal bands 
  
    tour.addStep({
-     text: 'clicking here will show the optimal bands',
+     text: 'click here to choose an optimal band',
      //text: `This button decreases the number of half twists of the optimal band.`,
      attachTo: {
        element: '#buttNumOfTetMinus',
@@ -516,7 +516,7 @@
    });
  
    tour.addStep({
-     text: 'clicking here will give the optimal bands',
+     text: 'click here to choose an optimal band',
      // text: `This button decreases the number of half twists of the optimal band.`,
      attachTo: {
        element: '#buttNumOfTetMinus',
@@ -537,7 +537,7 @@
    // colors 
    tour.addStep({
      title: 'view colors',
-     text: `change color of the band.`,
+     text: `choose color of the band`,
      attachTo: {
        element: '#buttColor2',
        on: 'bottom'
@@ -554,7 +554,7 @@
    // colors 
    tour.addStep({
      title: 'view colors',
-     text: `change color of the band.`,
+     text: `choose color of the band`,
      attachTo: {
        element: '#buttColor1',
        on: 'bottom'
@@ -573,8 +573,8 @@
  
    // Shepherd tour step
    tour.addStep({
-     title: 'View Colors',
-     text: 'Change the background color using the picker on the top-left.',
+     title: 'view colors',
+     text: 'choose background color using the picker on the top-left',
      attachTo: {
        element: '#backgroundButton',
        on: 'bottom'
@@ -594,7 +594,7 @@
  
    tour.addStep({
      title: 'view axis',
-     text: `view along the axis of symmetry.`,
+     text: `view along the best fit plane of the midline of a band`,
      attachTo: {
        element: '#buttAlignAxis',
        on: 'bottom'
@@ -610,7 +610,7 @@
    });
    tour.addStep({
      title: 'view axis',
-     text: `view along the plane of symmetry.`,
+     text: `view perpendicular the best fit plane of the midline of a band`,
      attachTo: {
        element: '#buttAlignPlane',
        on: 'bottom'
@@ -631,7 +631,7 @@
    var tourCamera;
    tour.addStep({
      title: 'view angle',
-     text: `hold the left click and move the mouse to rotate the band.`,
+     text: `hold the left click and move the mouse to rotate the band`,
      attachTo: {
        element: '#renderCanvas',
        on: 'bottom'

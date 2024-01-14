@@ -1427,41 +1427,57 @@
 
     // Start the tour
     var showTour = true;
-    window.startTour = function () {
-
-      const cursor = document.querySelector('.cursor');
-      if (cursor) {
-        cursor.style.display = 'block'; // Show the cursor
-      }
-      window.tour.start();
-
-      if (showTour == false) {
-        window.tour.cancel();
-      }
-
-
-    }
-
-
-
     document.addEventListener('DOMContentLoaded', function () {
-      // Show the modal
-      ebID('tourModal').style.display = 'block';
-    });
+    // Show the modal
+    ebID('tourModal').style.display = 'block';
+});
 
-    // Start tour when "Start Tour" button is clicked
-    ebID('startTourBtn').addEventListener('click', function () {
+// Initialize your tour
+var tour = new Shepherd.Tour({
+    // your tour options and steps
+});
+
+window.startTour = function() {
+    tour.start();
+};
+
+// Function to toggle pause and resume
+// Function to toggle pause and resume
+var isTourPaused = false;
+
+// Function to toggle pause and resume
+function toggleTourPause() {
+    if (tour.isActive() && !isTourPaused) {
+        tour.cancel();
+        isTourPaused = true;
+    } else if (isTourPaused) {
+        tour.start();
+        isTourPaused = false;
+    }
+}
 
 
 
-      window.startTour();
-      ebID('tourModal').style.display = 'none'; // Hide modal
-    });
+// Listen for keydown event
+document.addEventListener('keydown', function(event) {
+    if (event.code === 'KeyC') { // Check if space bar is pressed
+      console.log("event cancelled")
+        event.preventDefault(); // Prevent the default space bar action
+        toggleTourPause(); // Toggle the tour pause/resume
+    }
+});
 
-    // Close modal when "No Thanks" button is clicked
-    ebID('dismissTourBtn').addEventListener('click', function () {
-      ebID('tourModal').style.display = 'none'; // Hide modal
-    });
+// Start tour when "Start Tour" button is clicked
+ebID('startTourBtn').addEventListener('click', function () {
+    window.startTour();
+    ebID('tourModal').style.display = 'none'; // Hide modal
+});
+
+// Close modal when "No Thanks" button is clicked
+ebID('dismissTourBtn').addEventListener('click', function () {
+    ebID('tourModal').style.display = 'none'; // Hide modal
+});
+
 
     // document.addEventListener('keydown', function(event) {
     //   if (event.key === 'c' || event.key === 'C') {
