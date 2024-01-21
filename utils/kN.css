@@ -589,11 +589,6 @@ body {
 
 
 
-@media (orientation: landscape) {
-  .contentE {
-    height: 60vh; /* Adjust height for landscape mode */
-  }
-}
 
 @media (max-width: 768px) {
   .contentE {
@@ -636,6 +631,19 @@ svg {
     width: 80%; /* Larger percentage for smaller screens */
     height:auto; /* Larger percentage for smaller screens */
     /* Further adjustments as needed */
+  }
+}
+
+@media (orientation: landscape) and (max-width: 768px) {
+  .contentE {
+    height: 0px !important; /* Adjust height for landscape mode */
+  }
+  #renderCanvasE {
+    height: 0px !important;
+  }
+  #energySlider {
+    top: 5px !important;
+    opacity: 1 !important;
   }
 }
 
