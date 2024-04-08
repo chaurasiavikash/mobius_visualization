@@ -1,0 +1,44 @@
+if(type==2){
+            
+            for (var t = 1; t < Math.round(N/4)+1; ++t) {
+              var path = [];
+              var v0  = [];
+              var v   = [];
+
+              v0  = fourierExpansion(n, 2*t, hl)[0];   // vertex at time stamp t
+
+              for (var i = 1; i < N + 1; ++i){
+  
+              v[1] = v0[6 * i - 5]; 
+              v[2] = v0[6 * i - 4]; 
+              v[3] = v0[6 * i - 3]; 
+              v[4] = v0[6 * i - 2]; 
+              v[5] = v0[6 * i - 1]; 
+              v[6] = v0[6 * i  ];  
+
+               
+              path.splice(i-1, 0, new BABYLON.Vector3(v[1], v[3], -v[2]));
+              path.splice(N+i-1 , 0, new BABYLON.Vector3(v[4], v[6], -v[5]));
+            }
+            i =1;
+            v[1] = v0[6 * i - 5]; 
+              v[2] = v0[6 * i - 4]; 
+              v[3] = v0[6 * i - 3]; 
+              v[4] = v0[6 * i - 2]; 
+              v[5] = v0[6 * i - 1]; 
+              v[6] = v0[6 * i  ];  
+
+              path.push(new BABYLON.Vector3(v[1], v[3], -v[2]));
+           
+         
+            tube[t] = BABYLON.Mesh.CreateTube('tube', path, 0.0008, 8, null, null, scene);
+            
+            //var color = generateShadeOfCyan(t, N)
+            
+            
+            //edgeColo.diffuseColor = new BABYLON.Color3(color.r,color.g,color.b);
+            edgeColor.diffuseColor = new BABYLON.Color3(1,1,1);
+            tube[t].material = edgeColor;
+
+          };
+          }

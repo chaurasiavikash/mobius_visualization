@@ -80,8 +80,8 @@
       </g>
       <g class='touchElement  ' id='clockRing'>
         <title> drag to evert the band</title>
-        <circle cx='0' cy='0' r='40' fill='none' stroke='#555' stroke-width='26' />
-        <circle id='clockHand' r='10' fill='#fff' />
+        <circle cx='0' cy='0' r='0' fill='none' stroke='#555' stroke-width='26' />
+        <circle id='clockHand' r='0' fill='#fff' />
       </g>
     </svg>
 
@@ -122,8 +122,30 @@
     <button class='button' id='buttFullScreen' title='enable full screen'> full screen </button>
     <br>
     <br>
+    
+    <g class="textElement">
+
+      <text> swept volume </text>
+    </g>
+    <!-- eversion path of the edge  -->
+    <button class='button' id='buttshowEdgeVol' title='volume swept by the edge
+    of the band  during the everting motion'> edge volume </button>
+<!-- eversion path of the edge  -->
+<button class='button' id='buttShowMidVol' title='volume swept by the midline
+of the band  during the everting motion'> midline volume  </button>
+    <br>
+    <g class="textElement">
+
+      <text> eversion path </text>
+    </g>
+    <br>
+    <!-- eversion path of the edge -->
+    <button class='button' id='buttShowEdge' title='path traced by a point on the edge
+    of the band  during the everting motion'> edge path </button>
+   
+    <!-- eversion path of the midline -->
     <button class='button' id='buttShowMid' title='path traced by a point on the midline
-    of the band  during the everting motion'> eversion path </button>
+    of the band  during the everting motion'> midline path </button>
     <button class='button' id='buttShowUnit' title='show 1/n th of the band with n half twists '> show unit </button>
     <!-- <button class='button' id='buttShowAxis'> show axis </button> -->
     <br>
@@ -291,11 +313,19 @@
         var white = new BABYLON.StandardMaterial('texture1', scene);
         var cyan = new BABYLON.StandardMaterial('texture1', scene);
         var yellow = new BABYLON.StandardMaterial('texture1', scene);
+        var brightGreen = new BABYLON.StandardMaterial('texture1', scene);
+
+        var sweptEdgeColor =  new BABYLON.StandardMaterial('texture1', scene);
+        var sweptMidColor =  new BABYLON.StandardMaterial('texture1', scene);
+        
         var red = new BABYLON.StandardMaterial('texture1', scene);
+        var blue = new BABYLON.StandardMaterial('texture1', scene);
         var trans = new BABYLON.StandardMaterial('texture1', scene);
         white.diffuseColor = new BABYLON.Color3(1, 1, 1);
         cyan.diffuseColor = new BABYLON.Color3(0, 1, 1);
+        blue.diffuseColor = new BABYLON.Color3(0, 0, 1);
         yellow.diffuseColor = new BABYLON.Color3(1, 1, 0);
+        brightGreen.diffuseColor = new BABYLON.Color3(1, 0, .5);
         red.diffuseColor = new BABYLON.Color3(1, 0, 0);
         //cyan.wireframe = true;
         trans.alpha = 0.7;
@@ -344,6 +374,7 @@
 
 
         var golf = [];
+        var golfEdge = [];
 
 
 
@@ -615,7 +646,8 @@
 
 
           var ind1 = Math.round(N / (2 * n));
-
+          
+           
           for (var j = 1; j < golf.length + 1; j++) {
             let l = 2 * j * ind1 - 2 * ind1 + 1;
             var v1 = [v[6 * l - 5], v[6 * l - 3], -v[6 * l - 4]];
@@ -626,7 +658,21 @@
 
             };
 
-          };
+          };  
+
+           var j =1;
+            let l = 2 * (j+2) * ind1 - 2* ind1 + 1;
+            var v1 = [v[6 * l - 5], v[6 * l - 3], -v[6 * l - 4]];
+            var v2 = [v[6 * l - 2], v[6 * l], -v[6 * l - 1]];
+            if (golfEdge[j]) {
+              golfEdge[j].position = new BABYLON.Vector3( v1[0] ,
+                 v1[1]  ,  v1[2]  );
+
+            };
+
+          
+           
+
 
 
 
@@ -660,19 +706,165 @@
         // tube paths /////////////////////////////////////////////////////////////////////
 
         function createTube(tube, type, hingeLength, color) {
+
+           
           var ind0 = Math.round(N / (2 * n));
+
+          if(type==1){
           for (var i = 1; i < n + 1; i++) {
             var ind = 2 * i * ind0 - 2 * ind0 + 1;
 
-            var curve = paths(n, hingeLength, type, ind);
-            tube[i] = BABYLON.Mesh.CreateTube('tube', curve, 0.0025, 8, null, null, scene);
+            var curve = paths(n, hl, type, ind);
+            tube[i] = BABYLON.Mesh.CreateTube('tube', curve, 0.007, 8, null, null, scene);
             tube[i].material = color;
-            golf[i] = BABYLON.MeshBuilder.CreateIcoSphere(
-              'ico', { radius: 0.03, subdivisions: 8, flat: false, updatable: false }, scene);
-            golf[i].material = red;
-            updateBandMesh(k, hl);
 
+           
+            golf[i] = BABYLON.MeshBuilder.CreateIcoSphere(
+              'ico', { radius: 0.04, subdivisions: 8, flat: false, updatable: false }, scene);
+            golf[i].material = red;
+           
+            
+ 
+           };};
+
+           if(type==2){
+          for (var i = 1; i < 2; i++) {
+            var ind = 2 * (i+2) * ind0 - 2 * ind0 + 1;
+
+            var curve = paths(n, hl, type, ind);
+            tube[i] = BABYLON.Mesh.CreateTube('tube', curve, 0.01, 8, null, null, scene);
+            tube[i].material = color;
+
+           
+            golfEdge[i] = BABYLON.MeshBuilder.CreateIcoSphere(
+              'ico', { radius: 0.04, subdivisions: 8, flat: false, updatable: false }, scene);
+            golfEdge[i].material = blue;
+           
+            
+ 
+           };};
+
+
+
+           updateBandMesh(k, hl);
+        
+        
+        };
+          
+
+        function createSweptVolume(tube, type, hingeLength, color) {
+ 
+          if(type==2){
+            
+            for (var t = 1; t < Math.round(N/4)+1; ++t) {
+              var path = [];
+              var v0  = [];
+              var v   = [];
+
+              v0  = fourierExpansion(n, 2*t, hl)[0];   // vertex at time stamp t
+
+              for (var i = 1; i < N + 1; ++i){
+  
+              v[1] = v0[6 * i - 5]; 
+              v[2] = v0[6 * i - 4]; 
+              v[3] = v0[6 * i - 3]; 
+              v[4] = v0[6 * i - 2]; 
+              v[5] = v0[6 * i - 1]; 
+              v[6] = v0[6 * i  ];  
+
+               
+              path.splice(i-1, 0, new BABYLON.Vector3(v[1], v[3], -v[2]));
+              path.splice(N+i-1 , 0, new BABYLON.Vector3(v[4], v[6], -v[5]));
+            }
+            i =1;
+            v[1] = v0[6 * i - 5]; 
+              v[2] = v0[6 * i - 4]; 
+              v[3] = v0[6 * i - 3]; 
+              v[4] = v0[6 * i - 2]; 
+              v[5] = v0[6 * i - 1]; 
+              v[6] = v0[6 * i  ];  
+
+              path.push(new BABYLON.Vector3(v[1], v[3], -v[2]));
+           
+         
+            tube[t] = BABYLON.Mesh.CreateTube('tube', path, 0.0015, 8, null, null, scene);
+            
+            //var color = generateShadeOfCyan(t, N)
+            
+            
+            //edgeColo.diffuseColor = new BABYLON.Color3(color.r,color.g,color.b);
+            sweptEdgeColor.diffuseColor = new BABYLON.Color3(1,1,1);
+            tube[t].material = sweptEdgeColor;
+
+          };
+          // show the edge path if edge volume is shown 
+          meshDispose(tubeEdge)
+          meshDispose(golfEdge)
+          showEdge = true;
+          buttonSwitchColor(ebID('buttShowEdge'), showEdge);
+
+          createTube(tubeEdge, 2, 0.5 * 3, brightGreen);
           }
+
+
+          if(type==3){
+            
+            for (var t = 1; t < Math.round(N/3) ; ++t) {
+              var path = [];
+              var v0  = [];
+              var v   = [];
+
+              v0  = fourierExpansion(n, 3*t, hl)[0];   // vertex at time stamp t
+
+              for (var i = 1; i < N + 1; ++i){
+  
+              v[1] = v0[6 * i - 5]; 
+              v[2] = v0[6 * i - 4]; 
+              v[3] = v0[6 * i - 3]; 
+              v[4] = v0[6 * i - 2]; 
+              v[5] = v0[6 * i - 1]; 
+              v[6] = v0[6 * i  ];  
+
+              path.push(new BABYLON.Vector3(  (v[1] + v[4]) / 2,
+          (v[3] + v[6]) / 2,
+          -(v[2] + v[5]) / 2));
+            }
+
+            i = 1
+            v[1] = v0[6 * i - 5]; 
+              v[2] = v0[6 * i - 4]; 
+              v[3] = v0[6 * i - 3]; 
+              v[4] = v0[6 * i - 2]; 
+              v[5] = v0[6 * i - 1]; 
+              v[6] = v0[6 * i  ];  
+
+              path.push(new BABYLON.Vector3(  (v[1] + v[4]) / 2,
+          (v[3] + v[6]) / 2,
+          -(v[2] + v[5]) / 2));
+
+
+            tube[t] = BABYLON.Mesh.CreateTube('tube', path, 0.0015, 8, null, null, scene);
+            
+            //var color = generateShadeOfCyan(t, N)
+            
+            
+            //edgeColo.diffuseColor = new BABYLON.Color3(color.r,color.g,color.b);
+            sweptMidColor.diffuseColor = new BABYLON.Color3(173/255,1,47/255);
+            tube[t].material = sweptMidColor;
+
+          };
+          
+          }
+          // show only a unit when swept volume is shown
+          showUnit = true;
+          buttonSwitchColor(ebID('buttShowUnit'), showUnit);
+
+          
+          updateBandMesh(k, hl);
+        
+        }
+
+
           // if (type == 2) { // midpoints get golf
           //   for (var i = 1; i < n + 1; ++i) {
           //     golf[i] = BABYLON.MeshBuilder.CreateIcoSphere(
@@ -681,7 +873,7 @@
           //   }
           // updateBandMesh(k, hl);
           // }
-        }
+       
 
 
         // plane //////////////////////////////////////////////////////////////////////////
@@ -784,7 +976,25 @@
           if (showMid) {
             meshDispose(tubeMid);
             meshDispose(golf);
-            createTube(tubeMid, 2, 0.5 * 3, yellow);
+            createTube(tubeMid, 1, 0.5 * 3, yellow);
+          }
+
+          if (showEdge) {
+            meshDispose(tubeEdge);
+            meshDispose(golfEdge);
+            createTube(tubeEdge, 2, 0.5 * 3, brightGreen);
+          }
+
+          if (showEdgeVol) {
+            meshDispose(tubeEdgeVol);
+            meshDispose(golf);
+            createSweptVolume(tubeEdgeVol, 2, 0.5 * 3, cyan);
+          }
+
+          if (showMidVol) {
+            meshDispose(tubeMidVol);
+            meshDispose(golf);
+            createSweptVolume(tubeMidVol, 3, 0.5 * 3, cyan);
           }
 
           updateBandMesh(k, hl);
@@ -912,7 +1122,26 @@
           if (showMid) {
             meshDispose(tubeMid);
             meshDispose(golf);
-            createTube(tubeMid, 2, 0.5 * 3, yellow);
+            createTube(tubeMid, 1, 0.5 * 3, yellow);
+          }
+          
+          if (showEdge) {
+            meshDispose(tubeEdge);
+            meshDispose(golfEdge);
+            createTube(tubeEdge, 2, 0.5 * 3, brightGreen);
+          }
+
+
+          if (showEdgeVol) {
+            meshDispose(tubeEdgeVol);
+            meshDispose(golf);
+            createSweptVolume(tubeEdgeVol, 2, 0.5 * 3, cyan);
+          }
+
+          if (showMidVol) {
+            meshDispose(tubeMidVol);
+            meshDispose(golf);
+            createSweptVolume(tubeMidVol, 3, 0.5 * 3, cyan);
           }
 
           updateBandMesh(k, hl);
@@ -1007,6 +1236,19 @@
         ebID('hingeLengthSlider').addEventListener('sliderChange', function () {
           hl = hingeLengthSlider.getValue() / 100.0;
           if (!play) updateBandMesh(k, hl);
+
+          if (showEdgeVol) {
+            meshDispose(tubeEdgeVol);
+            //meshDispose(golf);
+            createSweptVolume(tubeEdgeVol, 2, 0.5 * 3, cyan);
+          }
+          if (showEdge) {
+            meshDispose(tubeEdge);
+            meshDispose(golfEdge);
+            createTube(tubeEdge, 2, 0.5 * 3, brightGreen);
+          }
+          
+           
           // if (showCorn) {
           //   meshDispose(tubeCorn);
           //   createTube(tubeCorn,1,hl,white);
@@ -1077,10 +1319,7 @@
           showUnit = !showUnit;
           buttonSwitchColor(ebID('buttShowUnit'), showUnit);
 
-
-
-
-
+  
           refresh = true;
         });
 
@@ -1138,7 +1377,7 @@
           refresh = true;
         }, false);
 
-
+// eversion path by midline and edge
         var tubeMid = [];
         ebID('buttShowMid').addEventListener('click', function () {
           showMid = !showMid;
@@ -1150,6 +1389,75 @@
           }
           refresh = true;
         });
+
+        var tubeEdge = [];
+        var showEdge = false;
+        ebID('buttShowEdge').addEventListener('click', function () {
+          showEdge = !showEdge;
+          buttonSwitchColor(ebID('buttShowEdge'), showEdge);
+          if (showEdge) createTube(tubeEdge, 2, 0.5 * 3, brightGreen);
+          else {
+            meshDispose(tubeEdge);
+            meshDispose(golfEdge);
+          }
+          refresh = true;
+        });
+
+
+//  volume swept
+        var tubeEdgeVol = [];
+        var showEdgeVol = false;
+
+        ebID('buttshowEdgeVol').addEventListener('click', function () {
+          showEdgeVol = !showEdgeVol;
+          buttonSwitchColor(ebID('buttshowEdgeVol'), showEdgeVol);
+          if (showEdgeVol) createSweptVolume(tubeEdgeVol, 2, 0.5 * 3, cyan);
+          else {
+            meshDispose(tubeEdgeVol);
+            // meshDispose(golf);
+          }
+          refresh = true;
+        });
+
+        var tubeMidVol = [];
+        var showMidVol = false;
+
+        ebID('buttShowMidVol').addEventListener('click', function () {
+          showMidVol = !showMidVol;
+          buttonSwitchColor(ebID('buttShowMidVol'), showMidVol);
+          if (showMidVol) createSweptVolume(tubeMidVol, 3, 0.5 * 3, cyan);
+          else {
+            meshDispose(tubeMidVol);
+            // meshDispose(golf);
+          }
+          refresh = true;
+        });
+
+
+        function generateShadeOfCyan(i, N) {
+  // Ensure i is within the range [0, N]
+  i = Math.max(0, Math.min(i, N));
+
+  // Calculate the fraction representing the position of i within the total N steps
+  let fraction = i / N;
+
+  // Start color is white
+  let startColor = { r: 1, g: 1, b: 1 };
+  // End color is cyan
+  let endColor = { r: 0, g: 0, b: 1 };
+
+  // Interpolate between start and end colors
+  let r = startColor.r + (endColor.r - startColor.r) * fraction;
+  let g = startColor.g + (endColor.g - startColor.g) * fraction;
+  let b = startColor.b + (endColor.b - startColor.b) * fraction;
+
+  // Round the results to get whole numbers for RGB values
+  r = Math.round(r);
+  g = Math.round(g);
+  b = Math.round(b);
+
+  return { r, g, b };
+}
         ///////////////////////////////////////////////////////////////////////////////////
 
         camera.attachControl(canvas, false);

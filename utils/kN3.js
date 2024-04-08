@@ -276,49 +276,27 @@ var animationData = function(j) {
     th = Math.PI;
   }
   //th = 0;
-  let ux = 0, uy = 0, uz = 1;
-  
-  
-  let R1u = [
-    [
-      Math.cos(th) + ux ** 2 * (1 - Math.cos(th)),
-      ux * uy * (1 - Math.cos(th)) - uz * Math.sin(th),
-      ux * uz * (1 - Math.cos(th)) + uy * Math.sin(th),
-    ],
-    [
-      ux * uy * (1 - Math.cos(th)) + uz * Math.sin(th),
-      Math.cos(th) + uy ** 2 * (1 - Math.cos(th)),
-      uy * uz * (1 - Math.cos(th)) - ux * Math.sin(th),
-    ],
-    [
-      ux * uz * (1 - Math.cos(th)) - uy * Math.sin(th),
-      uy * uz * (1 - Math.cos(th)) + ux * Math.sin(th),
-      Math.cos(th) + uz ** 2 * (1 - Math.cos(th)),
-    ],
-  ];
+  norm1 =Math.sqrt(rx[0]**2 + ry[0] **2)
+  //let costh = ry[0]/norm1;
+  //let sinth = rx[0]/norm1;
+  let costh = -rx[0]/norm1;
+  let sinth = ry[0]/norm1;
+  let tempx = 0;
+  let tempy = 0;
+   
     for (let i = 0; i <  N+1; i++) {
      
-     let temp = [];
-     temp[0] = R1u[0][0]*hx[i] + R1u[0][1]*hy[i] + R1u[0][2]*hz[i];
-     temp[1] = R1u[1][0]*hx[i] + R1u[1][1]*hy[i] + R1u[1][2]*hz[i];
-     temp[2] = R1u[2][0]*hx[i] + R1u[2][1]*hy[i] + R1u[2][2]*hz[i];
-     
-    
-    hx[i] = temp[0];
-    hy[i] = temp[1];
-    hz[i] = temp[2];
+      
+     tempx  = costh *hx[i]  - sinth *hy[i];
+     tempy  = sinth *hx[i]  + costh *hy[i];
+     hx[i] = tempx;
+     hy[i] = tempy;
 
-
+     tempx  = costh *rx[i]  - sinth *ry[i];
+     tempy  = sinth *rx[i]  + costh *ry[i];
+     rx[i] = tempx;
+     ry[i] = tempy;
  
-     temp[0] = R1u[0][0]*rx[i] + R1u[0][1]*ry[i] + R1u[0][2]*rz[i];
-     temp[1] = R1u[1][0]*rx[i] + R1u[1][1]*ry[i] + R1u[1][2]*rz[i];
-     temp[2] = R1u[2][0]*rx[i] + R1u[2][1]*ry[i] + R1u[2][2]*rz[i];
-
-    rx[i] = temp[0];
-    ry[i] = temp[1];
-    rz[i] = temp[2];
-    
-
 
   };
   
@@ -452,9 +430,9 @@ var paths = function (n, hl, selector,ind) {
     if (selector == 2) {
       path.push(
         new BABYLON.Vector3(
-          (v[1] + v[4]) / 2,
-          (v[3] + v[6]) / 2,
-          -(v[2] + v[5]) / 2
+           v[1] ,
+           v[3]  ,
+          - v[2]  
         )
       );
       // if (i > e / 2 - 1) {
