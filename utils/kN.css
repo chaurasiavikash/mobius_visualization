@@ -197,8 +197,10 @@ body {
   text-align:center;
   fill:#fff;
   font-family:Monospace;
-  font-size:16px;
-  opacity:0
+  font-size:18px;
+  opacity:0;
+  color:red;
+  fill:red;
   }
   
   .leftbar:hover .touchElement,.leftbar:hover .slider,.rightbar:hover .touchElement,.rightbar:hover .slider,.leftbar:hover .textElement text,.rightbar:hover .textElement text {
@@ -646,4 +648,3 @@ svg {
     opacity: 1 !important;
   }
 }
-

@@ -66,12 +66,12 @@
         <!-- Adjusted y values in points -->
       </g>
       <g class="textElement" id='infoTet'>
-        <text y='-40'>number of half twists</text>
+        <text y='-40'> half twists</text>
         <text id='infoNumOfTet' y='16'>3</text>
       </g>
     </svg>
 
-
+   
     <svg id='playSVG' width='200' height='200' viewBox='-60 -60 120 120' style='margin-top:10px'>
       <g class='touchElement glow-effect' id='buttPlayPause'>
         <title> click to play the everting motion</title>
@@ -83,7 +83,12 @@
         <circle cx='0' cy='0' r='0' fill='none' stroke='#555' stroke-width='26' />
         <circle id='clockHand' r='0' fill='#fff' />
       </g>
+      <g class="textElement" id = 'infoTet'  >
+        <text y='-40'> play/pause</text>
+        <text >  </text>
+             </g>
     </svg>
+   
 
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height:0; width:0; position:absolute;">
       <defs>
@@ -660,15 +665,18 @@ of the band  during the everting motion'> midline volume  </button>
 
           };  
 
-           var j =1;
+            var j =1;
             let l = 2 * (j+2) * ind1 - 2* ind1 + 1;
             var v1 = [v[6 * l - 5], v[6 * l - 3], -v[6 * l - 4]];
             var v2 = [v[6 * l - 2], v[6 * l], -v[6 * l - 1]];
+           
             if (golfEdge[j]) {
-              golfEdge[j].position = new BABYLON.Vector3( v1[0] ,
-                 v1[1]  ,  v1[2]  );
+              golfEdge[j].position = new BABYLON.Vector3( v1[0],v1[1],v1[2] );
+              golfEdge[j+1].position = new BABYLON.Vector3( v2[0],v2[1],v2[2] );   // golf ball on the other side
 
             };
+          
+           
 
           
            
@@ -728,28 +736,82 @@ of the band  during the everting motion'> midline volume  </button>
            };};
 
            if(type==2){
-          for (var i = 1; i < 2; i++) {
-            var ind = 2 * (i+2) * ind0 - 2 * ind0 + 1;
+            
+            for (var i = 1; i < 2; ++i){
+              var ind = 2 * (i+2) * ind0 - 2 * ind0 + 1;
+              var path = [];
+              var path2 = [];
+              var v0  = [];
+              var v   = [];
+              let N1 = Math.round(N/2);
 
-            var curve = paths(n, hl, type, ind);
-            tube[i] = BABYLON.Mesh.CreateTube('tube', curve, 0.01, 8, null, null, scene);
-            tube[i].material = color;
+           for (var t = 1; t <N+1;  t++) {
+             //console.log(t)
+              v0  = fourierExpansion(n, t, hl)[0];   // vertex at time stamp t
+              v[1] = v0[6 * ind - 5]; 
+              v[2] = v0[6 * ind - 4]; 
+              v[3] = v0[6 * ind - 3]; 
+              v[4] = v0[6 * ind - 2]; 
+              v[5] = v0[6 * ind - 1]; 
+              v[6] = v0[6 * ind  ];  
 
+               
+              path.splice(t-1, 0, new BABYLON.Vector3(v[1], v[3], -v[2]));
+              path.splice(N+t-1 , 0, new BABYLON.Vector3(v[4], v[6], -v[5]));
+            };
            
+            t =1;
+            v0  = fourierExpansion(n, t, hl)[0];
+            v[1] = v0[6 * ind - 5]; 
+            v[2] = v0[6 * ind - 4]; 
+            v[3] = v0[6 * ind - 3]; 
+           
+
+              path.push(new BABYLON.Vector3(v[1], v[3], -v[2]));
+            // creating path 
+            tube[i] = BABYLON.Mesh.CreateTube('tube', path, 0.01, 8, null, null, scene);
+            tube[i].material = color;
+            
+            // creating golf balls 
             golfEdge[i] = BABYLON.MeshBuilder.CreateIcoSphere(
               'ico', { radius: 0.04, subdivisions: 8, flat: false, updatable: false }, scene);
             golfEdge[i].material = blue;
+
+            golfEdge[i+1] = BABYLON.MeshBuilder.CreateIcoSphere(
+              'ico', { radius: 0.04, subdivisions: 8, flat: false, updatable: false }, scene);
+            golfEdge[i+1].material = blue;
+
+          };
+          
+        };
+
+        updateBandMesh(k, hl);
+      };
+          // for (var i = 1; i < 2; i++) {
+          //   var ind = 2 * (i+2) * ind0 - 2 * ind0 + 1;
+
+          //   var curve = paths(n, hl, type, ind);
+          //   tube[i] = BABYLON.Mesh.CreateTube('tube', curve, 0.01, 8, null, null, scene);
+          //   tube[i].material = color;
+
+           
+          //   golfEdge[i] = BABYLON.MeshBuilder.CreateIcoSphere(
+          //     'ico', { radius: 0.04, subdivisions: 8, flat: false, updatable: false }, scene);
+          //   golfEdge[i].material = blue;
            
             
  
-           };};
+          //  };
+          
+        
 
 
 
-           updateBandMesh(k, hl);
+         
         
         
-        };
+        
+    
           
 
         function createSweptVolume(tube, type, hingeLength, color) {
@@ -1297,6 +1359,7 @@ of the band  during the everting motion'> midline volume  </button>
         // toggle full screen /////////////////////////////////////////////////////////////
 
         // var ortho = false;
+       
         var fullScreen = false;
         ebID('buttFullScreen').addEventListener('click', function () {
           fullScreen = !fullScreen;
